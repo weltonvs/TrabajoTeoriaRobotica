@@ -34,7 +34,6 @@ ROS no es un sistema operativo en sí, a pesar de que su nombre indique lo contr
 
 ROS proporciona servicios estándar de un sistema operativo tales como abstracción del hardware, control de dispositivos de bajo nivel, implementación de funcionalidad uso común como paso de mensajes entre procesos y mantenimiento de paquetes. Está basado en una arquitectura de grafos donde el procesado toma lugar en los nodos, que pueden comunicarse con los sensores, control, estados, planificadores y actuadores, entre otros recursos.
 
-ROS esta dividido en dos partes básicas, una parte del sistema operativo y la otra a suite de paquetes aportados por la comunidad que implementan las funcionalidades como localización, mapeo simultáneo, planificación, percepción, simulación entre otros.
 
 Es de código libre bajo licencia BSD, donde esa licencia permite la libertad para uso comercial y uso en la investigación.
 
@@ -71,11 +70,6 @@ ROS fue diseñado y pensando con la intención de que los usuarios pudieran eleg
     \item Sistemas operativos: si bien ROS1 ya da soporte a Linux y MacOs (distribuciones basadas en UNIX), ROS2 dio el salto al Windows 10 aunque aún se encuentra en fases experimentales
 \end{itemize}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.75]{imagenes/Estructura.png}
-	\caption{\label{fig:ObjetivosTema1}Estructura de las capas de ROS/ROS2}
-\end{figure}
 
 Hoy en día ROS1: \href{http://wiki.ros.org/noetic}{ROS Noetic Ninjemys} es la última versión de ROS1. El objetivo principal de esta versión final de ROS1 es proporcionar soporte para Python3 de manera que los desarrolladores, instituciones y organizaciones que necesiten continuar trabajando con ROS1 puedan seguir haciéndolo durante un tiempo. Pero la fecha de fin de vida prevista para ROS Noetic está para 2025, es decir, el fin de ROS1 se acerca.
 
@@ -92,3 +86,37 @@ En el caso de tener ya un código estable, una base en ROS1, para uno o más rob
 Tras haberlo mencionado un par de veces, es importante destacar la utilidad del paquete \href{https://github.com/ros2/ros1_bridge}{\textit{ros1\_bridge}} como una herramienta útil en este período de transición entre ROS1 y ROS2. Cuando se necesite trabajar con una base de código ROS1 ya existente pero se desea empezar a realizar funciones y funcionalidades nuevas en ROS2, se utiliza este paquete que, como su propio nombre indica, no es más que un puente entre las comunicaciones de ROS1 y ROS2. Aunque los conceptos entre ROS1 y ROS2 son los mismos, la comunicación subyacente no es compatible (directamente) y requiere cierta adaptación, aquí es donde entra en acción \textit{ros1\_bridge}.
 
 Al hacer una transición a ROS2, se puede empezar portando algunos paquetes en ROS2 y hacer que estos paquetes comiencen a comunicarse con el resto de la aplicación en ROS1 y así sucesivamente, se portan tantos paquetes como sea necesario para que no quede nada escrito con ROS1, manteniendo la aplicación o proyecto operativos y funcionando de la manera esperada mientras se realiza el cambio.
+
+\section{Arquitectura}
+
+ROS esta dividido en dos partes básicas, una parte del sistema operativo y la otra a suite de paquetes aportados por la comunidad que implementan las funcionalidades como localización, mapeo simultáneo, planificación, percepción, simulación entre otros. En la imagen de la izquierda de la Figura \ref{fig:Estructura} muestra el ejemplo más amplio de la estructura de ROS.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.75]{imagenes/Estructura.png}
+	\caption{\label{fig:Estructura}Estructura de las capas de ROS/ROS2}
+\end{figure}
+
+Como se puede observar, los procesos de ROS/ROS2 se representan como nodos, conocido como \textbf{ROS NODES} en una estructura gráfica, conectada por bordes llamados \textbf{ROS Topics}. Los ROS NODES pueden pasar mensajes entre si a través de los ROS Topics, en realizar llamadas de servicio a otros nodos, proporciona un servicio para otros nodos como recuperar y establecer datos compartidos de una base de datos común conocida como \textbf{Paramter Server}.
+
+Un proceso llamado ROS Master hace que todo el proceso de control de los nodos sea prosible al registrar nodos para si mismo.
+
+Los mensajes y las llamadas de servicio no son controlados por el MASTER, sino que el MASTER establece la comunicación entre pares y entre todos los procesos de nodo y después de que estos se registren con el MASTER. Esta arquitectura descentralizada ayuda bastante para trabajar con los robots, que a menudo consisten en un subconjunto de hardware informático en red, y pueden comunicarse con computadoras externas para realizar cálculos complejos
+
+\section{Herramientas}
+Las funcionalidades de ROS se espanden bastante con una variedad de herramientas que permiten los desarrolladores y investigadores visualizar, recompilar infomación y navegar de forma muy sencilla dentro de la estructura de paquetes que posee ROS. 
+
+Se pueden crear código fuentes robustos para automatizar tareas muy complejas y otros procesos de configuración dentro de ROS. Con todo esas facilidades, ROS se torna una herramienta muy potente a la hora de hacer desarrollo para el campo de la robótica. 
+
+La mayoría de las herramientas que provee ROS, las más importantes son:
+\begin{itemize}
+    \item \textbf{rosbash:} Es una herramienta que aumenta las funcionalidades del bash, funciona como un ZSH o otro sistema de terminal incorporado en ambiente Unix.
+    \item \textbf{rviz:} Es una herramienta de simulación y visualización 3D para robots que es el entorno que se desenvolve los robots además de blindar información de los sensores, que son altamente configurables.
+    \item \textbf{rosbag:} rosbag es una herramienta de línea de comandos para grabar y reproducir datos de mensajes y comunicaciones dentro de ROS. rosbag utiliza un formato de archivo llamado bags, que registra los mensajes de ROS mediante escuchar los ROS topic y almacena los mensajes en la medida que son emitidos. Visualizar los mensajes desde bag es mayormente lo mismo que tener los ROS Nodes originales reproduciendo estos mensajes. Esto hace de bags una herramienta muy útil para capturar la información que posteriormente se puede utilizar, analizar y posteriormente ser usada para el desarrollo de paquetes ROS por ejemplo. Mientas rosbag es una herramienta puramente de línea de comando, también posee una implementación rqt llamada \textit{rqt\_bag} que brinda una interfaces gráfica.
+    \item \textbf{catkin:} catkin es la herramienta actual de compilación de ROS, habiendo reemplazado a rosbuild. catkin esta basada en CMake, es multiplataforma, de código abierto e independiente del lenguaje de programación.
+    \item \textbf{roslaunch:} roslaunch es una herramienta usada para ejecutar múltiples nodos ROS de forma local o remota, de igual forma es usado para configurar parámetros en un servidor de parámetros ROS. Los archivos de configuración roslaunch, cuyo código esta escrito usando XML pueden de forma sencilla automatizar complejos procesos de arranque y configuraciones con un sólo comando. Las secuencias de comandos dentro de archivos roslaunch pueden anidar dentro de ellas llamadas a otras secuencias de comandos roslaunch, inicio de nodos ROS en máquinas específicas y hasta reiniciar procesos que se han caído.
+\end{itemize}
+
+\section{Conclusión}
+
+De todas las características vistas hasta ahora sobre ROS/ROS2 no hay duda que se trata de una herramienta muy potente para trabajar con la robótica propiciando al investigador o desarrollador recursos impresionantes. Además de tener un costo bajo.
