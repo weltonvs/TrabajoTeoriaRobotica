@@ -59,6 +59,22 @@ Se podría concluir con que ROS es una colección de frameworks para el desarrol
 
 ROS fue diseñado y pensando con la intención de que los usuarios pudieran elegir libremente las herramientas y bibliotecas que interactuaran con el núcleo de ROS y para que de esta forma sus usuarios pudieran cambiar sus desarrollos de software para adaptarse a su robot y área de aplicación. Como tal, hay muy poco que sea realmente esencial para ROS, más allá de la estructura general dentro de la cual los programas deben coexistir y comunicarse. En cierto sentido, ROS es el nexo subyacente detrás de los nodos y el paso de mensajes. Sin embargo, en realidad, ROS es mucho más que un aglomerado de bibliotecas. ROS es un conjunto rico de herramientas ademas de un amplio conjunto de capacidades proporcionadas por paquetes, como consecuencia resulta un ecosistema en constante crecimiento. 
 
+\section{Arquitectura}
+
+ROS esta dividido en dos partes básicas, una parte del sistema operativo y la otra a suite de paquetes aportados por la comunidad que implementan las funcionalidades como localización, mapeo simultáneo, planificación, percepción, simulación entre otros. En la imagen de la izquierda de la Figura \ref{fig:Estructura} muestra el ejemplo más amplio de la estructura de ROS.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.75]{imagenes/Estructura.png}
+	\caption{\label{fig:Estructura}Estructura de las capas de ROS/ROS2}
+\end{figure}
+
+Como se puede observar, los procesos de ROS/ROS2 se representan como nodos, conocido como \textbf{ROS NODES} en una estructura gráfica, conectada por bordes llamados \textbf{ROS Topics}. Los ROS NODES pueden pasar mensajes entre si a través de los ROS Topics, en realizar llamadas de servicio a otros nodos, proporciona un servicio para otros nodos como recuperar y establecer datos compartidos de una base de datos común conocida como \textbf{Paramter Server}.
+
+Un proceso llamado ROS Master hace que todo el proceso de control de los nodos sea prosible al registrar nodos para si mismo.
+
+Los mensajes y las llamadas de servicio no son controlados por el MASTER, sino que el MASTER establece la comunicación entre pares y entre todos los procesos de nodo y después de que estos se registren con el MASTER. Esta arquitectura descentralizada ayuda bastante para trabajar con los robots, que a menudo consisten en un subconjunto de hardware informático en red, y pueden comunicarse con computadoras externas para realizar cálculos complejos
+
 \section{ROS2}
 
 ¿Por qué nació ROS2? La robótica, como muchos otros campos, está en continua evolución y ciertas limitaciones de ROS1 propiciaron la creación de ROS2 para adaptarse a la corriente actual del mundo de la robótica y a los nuevos requisitos. A continuación se comentan algunas de las diferencias más significativas entre ambos proyectos:
@@ -86,22 +102,6 @@ En el caso de tener ya un código estable, una base en ROS1, para uno o más rob
 Tras haberlo mencionado un par de veces, es importante destacar la utilidad del paquete \href{https://github.com/ros2/ros1_bridge}{\textit{ros1\_bridge}} como una herramienta útil en este período de transición entre ROS1 y ROS2. Cuando se necesite trabajar con una base de código ROS1 ya existente pero se desea empezar a realizar funciones y funcionalidades nuevas en ROS2, se utiliza este paquete que, como su propio nombre indica, no es más que un puente entre las comunicaciones de ROS1 y ROS2. Aunque los conceptos entre ROS1 y ROS2 son los mismos, la comunicación subyacente no es compatible (directamente) y requiere cierta adaptación, aquí es donde entra en acción \textit{ros1\_bridge}.
 
 Al hacer una transición a ROS2, se puede empezar portando algunos paquetes en ROS2 y hacer que estos paquetes comiencen a comunicarse con el resto de la aplicación en ROS1 y así sucesivamente, se portan tantos paquetes como sea necesario para que no quede nada escrito con ROS1, manteniendo la aplicación o proyecto operativos y funcionando de la manera esperada mientras se realiza el cambio.
-
-\section{Arquitectura}
-
-ROS esta dividido en dos partes básicas, una parte del sistema operativo y la otra a suite de paquetes aportados por la comunidad que implementan las funcionalidades como localización, mapeo simultáneo, planificación, percepción, simulación entre otros. En la imagen de la izquierda de la Figura \ref{fig:Estructura} muestra el ejemplo más amplio de la estructura de ROS.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.75]{imagenes/Estructura.png}
-	\caption{\label{fig:Estructura}Estructura de las capas de ROS/ROS2}
-\end{figure}
-
-Como se puede observar, los procesos de ROS/ROS2 se representan como nodos, conocido como \textbf{ROS NODES} en una estructura gráfica, conectada por bordes llamados \textbf{ROS Topics}. Los ROS NODES pueden pasar mensajes entre si a través de los ROS Topics, en realizar llamadas de servicio a otros nodos, proporciona un servicio para otros nodos como recuperar y establecer datos compartidos de una base de datos común conocida como \textbf{Paramter Server}.
-
-Un proceso llamado ROS Master hace que todo el proceso de control de los nodos sea prosible al registrar nodos para si mismo.
-
-Los mensajes y las llamadas de servicio no son controlados por el MASTER, sino que el MASTER establece la comunicación entre pares y entre todos los procesos de nodo y después de que estos se registren con el MASTER. Esta arquitectura descentralizada ayuda bastante para trabajar con los robots, que a menudo consisten en un subconjunto de hardware informático en red, y pueden comunicarse con computadoras externas para realizar cálculos complejos
 
 \section{Herramientas}
 Las funcionalidades de ROS se espanden bastante con una variedad de herramientas que permiten los desarrolladores y investigadores visualizar, recompilar infomación y navegar de forma muy sencilla dentro de la estructura de paquetes que posee ROS. 
